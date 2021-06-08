@@ -6,4 +6,5 @@ __pycache__/
 local_settings.py
 /static/
 /JD/
-
+db.sqlite3
+/migrations/
