@@ -1,0 +1,39 @@
+{% extends 'lead/base.html' %}
+
+{% block content %}
+
+<h1>Show view for leads is working</h1>
+
+
+{% for lead in leads %}
+    <div class="card">
+        <div class="card-header">
+            {{ lead.title }}
+        </div>
+        <div class="card-body">
+            <blockquote class="blockquote mb-0">
+            <p><a target="_blank" href="{{ lead.contact }}">{{ lead.contact|make_list|slice:"28:"|join:"" }}</a></p>
+            <footer class="blockquote-footer">TODO: <cite title="Source Title">{{ lead.next_step }}</cite></footer>
+            </blockquote>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Rate: {{ lead.currency }}{{ lead.rate }}</li>
+                <li class="list-group-item">Start date: {{ lead.start }}</li>
+                <li class="list-group-item">Active: {{ lead.active }}</li>
+                {% if lead.jd %}
+                    <li class="list-group-item"><a href="{{ lead.jd.url }}">Job Description</a></li>
+                {% else %}
+                    <li class="list-group-item"><strike><a>Job Description</a></strike></li>
+                {% endif %}
+            </ul>
+            <a href="{% url 'update-view' lead.id %}" class="btn btn-secondary">Edit</a>
+            <a href="#" class="btn btn-secondary" onclick="document.getElementById('archivelead').submit()">Archive</a>
+            <form id='archivelead' action="{% url 'archive-action-view' lead.id %}" method="POST">
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+    <br>
+{% endfor %}
+
+
+{% endblock %}

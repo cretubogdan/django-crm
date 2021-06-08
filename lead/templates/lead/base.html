@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>CRM</title>
+    <nav class="navbar navbar-expand-lg navbar-light bg-secondary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home-view' %}">CRM</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'show-view' %}">Leads</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'archive-view' %}">Archived</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create-view' %}">Create</a>
+            </li>
+            {% if not user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'register-view' %}">Register</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login-view' %}">Login</a>
+              </li>
+            {% endif %}
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <form id='logoutform' action="{% url 'logout-view' %}" method="POST">
+                  {% csrf_token %}
+                </form>
+                <a class="nav-link" href="#" onclick="document.getElementById('logoutform').submit()">Logout</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+      {% if user.is_authenticated %}
+        <div class="container-fluid justify-content-end">
+        Logged in as {{ user }}
+        </div>
+      {% endif %}
+    </nav>
+  </head>
+  <body>
+    {% block content %}
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  </body>
+</html>
